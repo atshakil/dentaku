@@ -15,6 +15,10 @@ module Dentaku
         predicate.value(context) ? left.value(context) : right.value(context)
       end
 
+      def string_value(context = {})
+        "IF(#{context[predicate.left.identifier]} #{predicate.operator.to_s} #{predicate.right.string_value(context)}, #{left.string_value(context)}, #{right.string_value(context)})"
+      end
+
       def node_type
         :condition
       end
