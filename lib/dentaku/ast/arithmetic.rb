@@ -32,6 +32,10 @@ module Dentaku
         l.public_send(operator, r)
       end
 
+      def string_value(context = {})
+        [left.string_value(context), operator, right.string_value(context)].join(" ")
+      end
+
       private
 
       def cast(val, prefer_integer = true)

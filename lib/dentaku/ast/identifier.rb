@@ -26,6 +26,20 @@ module Dentaku
         end
       end
 
+      def string_value(context = {})
+        v = context.fetch(identifier) do
+          raise UnboundVariableError.new([identifier]),
+                "no value provided for variables: #{identifier}"
+        end
+
+        case v
+        when Node
+          v.value(context)
+        else
+          v
+        end
+      end
+
       def dependencies(context = {})
         context.key?(identifier) ? dependencies_of(context[identifier]) : [identifier]
       end
