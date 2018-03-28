@@ -16,7 +16,20 @@ module Dentaku
       end
 
       def string_value(context = {})
-        "IF(#{context[predicate.left.identifier]} #{predicate.operator.to_s} #{predicate.right.value}, #{left.value}, #{right.value})"
+        predicate_left, predicate_right, left_str, right_str = [predicate.left, predicate.right, left, right].map do |n|
+          case n.class.name
+            when "Dentaku::AST::Identifier"
+              context[n.identifier]
+            when "Dentaku::AST::Numeric"
+              n.value
+            when "Dentaku::AST::If"
+              n.string_value(context)
+            else
+              ""
+          end
+        end
+
+        "IF(#{predicate_left} #{predicate.operator.to_s} #{predicate_right}, #{left_str}, #{right_str})"
       end
 
       def node_type

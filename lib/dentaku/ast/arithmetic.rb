@@ -33,6 +33,7 @@ module Dentaku
       end
 
       def string_value(context = {})
+        return "" if left.nil? || right.nil?
         [left.string_value(context), operator, right.string_value(context)].join(" ")
       end
 
